@@ -8,13 +8,7 @@ login_exitoso = False
 
 def conn(usuario, password):
     # Realizar la conexión con la base de datos utilizando la función connection
-    conn = connection(usuario, password)
-    if conn:
-        messagebox.showinfo("Conexión exitosa", "La conexión a la base de datos fue exitosa")
-        return True
-    else:
-        messagebox.showerror("Error de conexión", "No se pudo conectar a la base de datos")
-        return False
+    return connection(usuario, password)
 
 def verificar_login():
     global login_exitoso
@@ -27,10 +21,25 @@ def verificar_login():
     if conn(usuario, password):
         login_exitoso = True
         messagebox.showinfo("Login exitoso", f"Bienvenido, {usuario}!")
-        root.destroy()  # Cerrar la ventana de login
+        root.withdraw()  # Ocultar la ventana de login
         crear_menu()  # Llamar a la función para crear el menú principal después del login
     else:
-        messagebox.showerror("Error de login", "Usuario o contraseña incorrectos")
+        mostrar_error_login()
+
+def mostrar_error_login():
+    error_window = tk.Toplevel(root)
+    error_window.title("Error de Login")
+    
+    label_error = tk.Label(error_window, text="Usuario o contraseña incorrectos. Por favor, inténtelo de nuevo.")
+    label_error.pack(pady=10)
+    
+    button_retry = tk.Button(error_window, text="Volver a intentar", command=lambda: [error_window.destroy(), mostrar_ventana_login()])
+    button_retry.pack(pady=5)
+
+def mostrar_ventana_login():
+    entry_usuario.delete(0, tk.END)  # Borrar el contenido del campo de usuario
+    entry_password.delete(0, tk.END)  # Borrar el contenido del campo de contraseña
+    root.deiconify()  # Mostrar la ventana de login nuevamente
 
 def iniciar_login():
     global root, entry_usuario, entry_password
@@ -47,7 +56,7 @@ def iniciar_login():
 
     label_password = tk.Label(root, text="Contraseña:")
     label_password.pack(pady=10)
-    entry_password = tk.Entry(root, show="")  # show="" para ocultar la contraseña
+    entry_password = tk.Entry(root, show="*")  # show="*" para ocultar la contraseña
     entry_password.pack(pady=5)
 
     button_login = tk.Button(root, text="Login", command=verificar_login)
@@ -55,3 +64,6 @@ def iniciar_login():
 
     # Ejecutar el bucle principal de la ventana
     root.mainloop()
+
+if __name__ == "__main__":
+    iniciar_login()
