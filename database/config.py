@@ -1,9 +1,9 @@
 import mysql.connector
 
-def connection ():
+def connection (user, password):
      
-        conn = mysql.connector.connect(user='root', 
-                                     password='123456789', 
+        conn = mysql.connector.connect(user=user, 
+                                     password=password, 
                                      host= 'localhost', 
                                       database='hotel_mpc',
                                        port='3306')
