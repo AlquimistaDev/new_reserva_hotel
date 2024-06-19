@@ -1,14 +1,14 @@
-from database.config import connection
+from login.login import iniciar_login, login_exitoso
 from menu.interface import crear_menu
 
 def main():
-    conn = connection()
-    if conn:
-        print("La conexión fue exitosa")
-    else:
-        print("Error en la conexión")
-    
-    crear_menu()
+    iniciar_login()
 
-if __name__ == '__main__':
+    if login_exitoso:
+        print("El login fue exitoso")
+        crear_menu()
+    else:
+        print("El login no fue exitoso")
+
+if __name__ == "__main__":
     main()
