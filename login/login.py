@@ -5,24 +5,23 @@ from menu.interface import crear_menu
 
 # Variable global para indicar si el login fue exitoso
 login_exitoso = False
+conexion_db = None
 
 def conn(usuario, password):
-    # Realizar la conexión con la base de datos utilizando la función connection
-    return connection(usuario, password)
+    global conexion_db
+    conexion_db = connection(usuario, password)
+    return conexion_db is not None
 
 def verificar_login():
     global login_exitoso
     usuario = entry_usuario.get()
     password = entry_password.get()
     
-    # Aquí puedes realizar validaciones adicionales si es necesario
-
-    # Verificar la conexión y el login
     if conn(usuario, password):
         login_exitoso = True
         messagebox.showinfo("Login exitoso", f"Bienvenido, {usuario}!")
-        root.withdraw()  # Ocultar la ventana de login
-        crear_menu()  # Llamar a la función para crear el menú principal después del login
+        root.withdraw()
+        crear_menu(conexion_db)
     else:
         mostrar_error_login()
 

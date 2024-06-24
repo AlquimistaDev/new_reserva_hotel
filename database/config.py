@@ -9,15 +9,12 @@ def connection(user, password):
                                        database='hotel_mpc',
                                        port='3306')
         if conn.is_connected():
-            return True
+            return conn
         else:
-            return False
+            return None
     except errors.ProgrammingError as e:
         print(f"Error: {e}")
-        return False
-
-
-        
+        return None
      
 
      
